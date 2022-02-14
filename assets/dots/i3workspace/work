@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# author    niraj
+# github    niraj998
+
+# get workspace widget for eww
 workspaces() {
 
 # Don't change this
@@ -23,7 +27,7 @@ works7="unoccupied"
 works8="unoccupied"
 works9="unoccupied"
 
-# This is the list of occupied windows. So I realised i3 only creates workspace when you you go to that workspace or window is open on workspace. so if workspace exist it's also occupied.
+# This is the list of occupied windows. (So I realised i3 only creates workspace when you you go to that workspace or window is open on that workspace. so if workspace exist it's also occupied.)
 list="$(i3-msg -t get_workspaces | jq '.[] | select(.visible==false).name' | cut -d"\"" -f2  2>/dev/null)"
 
 [[ "$list" == *"1"* ]] && works1="occupied"
@@ -39,7 +43,7 @@ list="$(i3-msg -t get_workspaces | jq '.[] | select(.visible==false).name' | cut
 # this is the list of focused windows
 focused=$(i3-msg -t get_workspaces | jq '.[] | select(.focused==true).name'  | cut -d"\"" -f2 2>/dev/null)
 
-# there can be only one focused window so no need of globs matching
+# there can be only one focused window so no need of glob matching
 [ "$focused" = 1 ] && works1="focused"
 [ "$focused" = 2 ] && works2="focused"
 [ "$focused" = 3 ] && works3="focused"
@@ -66,10 +70,7 @@ urgent=$(i3-msg -t get_workspaces | jq '.[] | select(.urgent==true).name'  | cut
   echo "(box	:class \"works\" :orientation \"h\"	:halign \"center\"	:valign \"start\"	 :space-evenly \"false\" :spacing \"10\" (button :onclick \"i3-msg 'workspace $ws1'\"	:class	\"$works1\"	\"\") (button :onclick \"i3-msg 'workspace $ws2'\"	:class \"$works2\"	 \"\") (button :onclick \"i3-msg 'workspace $ws3'\"	:class \"$works3\" \"\") (button :onclick \"i3-msg 'workspace $ws4'\"	:class \"$works4\"	\"\") (button :onclick \"i3-msg 'workspace $ws5'\"	:class \"$works5\" \"\" )  (button :onclick \"i3-msg 'workspace $ws6'\"	:class \"$works6\" \"\")  (button :onclick \"i3-msg 'workspace $ws7'\"	:class \"$works7\" \"\")  (button :onclick \"i3-msg 'workspace $ws8'\"	:class \"$works8\" \"\")  (button :onclick \"i3-msg 'workspace $ws9'\"	:class \"$works9\" \"漣\"))"
 }
 
-
 workspaces
 i3-msg -t subscribe -m '["window", "workspace"]' | while read -r _ ; do
 workspaces
 done
-
-
